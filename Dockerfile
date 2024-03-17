@@ -16,11 +16,8 @@
 
  
 FROM golang:1.19.3
- 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-
- 
+  
+  
 WORKDIR /app
 
  
