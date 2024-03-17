@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	//"example.com/ansiblego/Server"
@@ -23,12 +22,12 @@ func main() {
 	ServerHost := "localhost:9000"
 	errListen := http.ListenAndServe(ServerHost, nil)
 	if errListen != nil {
-		fmt.Println(errListen)
+		log.Println(errListen)
 	}
 
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	setupCORS(&w, r)
-	fmt.Fprintf(w, "Home Call Ok ...")
+	log.Println(w, "Home Call Ok ...")
 }
