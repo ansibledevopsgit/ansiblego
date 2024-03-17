@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"../Router"
+	"example.com/ansiblego/Router"
 )
 
 type Configserver struct {

@@ -3,7 +3,7 @@ package Router
 import (
 	"net/http"
 
-	"../Services"
+	"example.com/ansiblego/Services"
 )
 
 func Route() {

@@ -1,7 +1,7 @@
 package main
 
  import (
-	 "./Server"
+	 "example.com/ansiblego/Server"
  )
 
 func main(){
