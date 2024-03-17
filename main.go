@@ -19,8 +19,8 @@ func main() {
 
 	http.HandleFunc("/", Home)
 
-	ServerHost := "localhost:9000"
-	errListen := http.ListenAndServe(ServerHost, nil)
+	//ServerHost := "localhost:9000"
+	errListen := http.ListenAndServe(":9000", nil)
 	log.Println("Run ...")
 	if errListen != nil {
 		log.Println(errListen)
