@@ -33,9 +33,11 @@ func Run() {
 	log.Println("Start http server.")
 
 	//ServerHost := config.Host+":"+config.Port
-	ServerHost := "localhost:8080"
-	errListen := http.ListenAndServe(ServerHost, nil)
+	//ServerHost := "localhost:9000"
+	errListen := http.ListenAndServe(":9000", nil)
+	log.Println("Run ...")
 	if errListen != nil {
-		fmt.Println(errListen)
+		log.Println(errListen)
 	}
+	
 }
