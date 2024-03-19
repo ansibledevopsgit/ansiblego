@@ -1,14 +1,37 @@
 package Services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
+	"time"
+
+	"example.com/ansiblego/MongoDb"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 type User struct {
-    UserID int  `json:"userID"`
-     
+	UserID int `bson:"userID"`
+}
+
+var DBName = "db_user"
+var TabelName = "tbl_user"
+
+func Connection() *mongo.Client {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		log.Println(err)
+	}
+	//defer client.Disconnect(ctx)
+
+	return client
 }
 
 func setupCORS(w *http.ResponseWriter, req *http.Request) {
@@ -23,21 +46,36 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 func Create(w http.ResponseWriter, r *http.Request) {
 	setupCORS(&w, r)
+	var client = Connection()
+	var UserService MongoDb.IUserService = MongoDb.NewUserServiceStruct(client, DBName, TabelName)
+	UserService.Create()
 	fmt.Fprintf(w, "Create Call ...")
 }
 func GetAll(w http.ResponseWriter, r *http.Request) {
 	setupCORS(&w, r)
-	fmt.Fprintf(w, "GetAll Call ...")
+	var client = Connection()
+	var UserService MongoDb.IUserService = MongoDb.NewUserServiceStruct(client, DBName, TabelName)
+	userEntitys := UserService.GetAllUser()
+	fmt.Fprintf(w, "%v", userEntitys)
 }
 func Insert(w http.ResponseWriter, r *http.Request) {
 	setupCORS(&w, r)
 	defer r.Body.Close()
 
 	user := new(User)
-	err := json.NewDecoder(r.Body).Decode(user) 
-	if err != nil{ 
+	err := json.NewDecoder(r.Body).Decode(user)
+	if err != nil {
 		fmt.Println(err)
 	}
-	userid := strconv.Itoa(user.UserID)
-	fmt.Fprintf(w, "Insert Call  And UserID : "+  userid)
+
+	userEntity := new(MongoDb.IUser)
+	userEntity.UserID = user.UserID
+	userEntity.UserFname = "Mohammad"
+	userEntity.UserLname = "Rahimi"
+	userEntity.UserMobile = "09115755339"
+
+	var client = Connection()
+	var UserService MongoDb.IUserService = MongoDb.NewUserServiceStruct(client, DBName, TabelName)
+	state := UserService.Insert(userEntity)
+	fmt.Fprintf(w, "Insert Call  And UserID : "+strconv.Itoa(user.UserID), " state = ", state)
 }
