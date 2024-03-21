@@ -35,7 +35,7 @@ func Connection() *mongo.Client {
 }
 
 func setupCORS(w *http.ResponseWriter, req *http.Request) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost")
 	(*w).Header().Set("Access-Control-Allow-Methods", "OPTIONS, GET, PUT, PATCH, POST, DELETE")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Authorization")
 }
